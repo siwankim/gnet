@@ -374,7 +374,7 @@ func (el *eventloop) close(c *conn, err error) error {
 			iov = iov[:iovMax]
 		}
 		n, err := gio.Writev(c.fd, iov)
-		if err != nil {
+		if err != nil && err != unix.EWOULDBLOCK {
 			break
 		}
 		_, _ = c.outboundBuffer.Discard(n)
